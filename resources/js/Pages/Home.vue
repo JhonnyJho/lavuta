@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 
 import PaginationLinks from "./Components/PaginationLinks.vue";
 
-import { router } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 
 import { debounce } from "lodash";
 
@@ -54,20 +54,24 @@ const getDate = (date) =>
                 <tbody>
                     <tr v-for="user in users.data" :key="user.id">
                         <td>
-                            <img :src="user.avatar ? ('storage/' + user.avatar) : 'storage/avatars/defaultpfp.png'" class="avatar" />
+                            <Link :href="route('users.profile', user.id)">
+                                <img :src="user.avatar ? ('storage/' + user.avatar) 
+                                : 'storage/avatars/defaultpfp.png'" 
+                                class="avatar cursor-pointer" 
+                                alt="User Avatar" />
+                            </Link>
                         </td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ getDate(user.created_at) }}</td>
                         <td v-if="can.delete_user">
-    <button
-        class="bg-red-500 w-6 h-6 rounded-full flex items-center justify-center text-white hover:bg-red-700 transition"
-        @click="deleteUser(user.id)"
-        title="Delete user"
-    >
-        &times;
-    </button>
-</td>
+                <button
+                    class="bg-red-500 w-6 h-6 rounded-full flex items-center justify-center text-white hover:bg-red-700 transition"
+                    @click="deleteUser(user.id)"
+                    title="Delete user">
+                    &times;
+                </button>
+            </td>
                     </tr>
                 </tbody>
             </table>
